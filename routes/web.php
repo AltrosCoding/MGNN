@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::apiResources([
-    'users' => 'UserController',
-    'posts' => 'PostController',
-]);
+// Route::apiResources([
+//     'users' => 'UserController',
+//     'posts' => 'PostController',
+// ]);

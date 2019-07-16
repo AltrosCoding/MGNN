@@ -26,6 +26,8 @@ class CreateUsersTable extends Migration
             $table->integer('level')->default(1);
             $table->string('ad_sense_snippet', 1000)->nullable();
         });
+
+        DB::statement('ALTER TABLE users ADD password binary(60) NOT NULL AFTER user_name');
     }
 
     /**

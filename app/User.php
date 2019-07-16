@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use Tymon\JWTAuth\Contracts\JWTSubject;
+
 class User extends Model
 {
     protected $fillable = [
@@ -25,5 +27,13 @@ class User extends Model
             'id',
             'post_id'
         );
+    }
+
+    public function getJWTIdentifier() {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims() {
+        return [];
     }
 }

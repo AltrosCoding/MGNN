@@ -38,13 +38,14 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $user = User::create([
-            'user_name' => $request->userName,
-            'first_name' => $request->firstName,
-            'last_name' => $request->lastName,
-            'birth_date' => $request->birthDate,
+            'user_name' => $request->user_name,
+            'password' => Hash::make($request->password),
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'birth_date' => $request->birth_date,
             'email' => $request->email,
             'role' => $request->role,
-            'ad_sense_snippet' => $request->adSenseSnippet,
+            'ad_sense_snippet' => $request->ad_sense_snippet,
         ]);
 
         return new UserResource($user);
