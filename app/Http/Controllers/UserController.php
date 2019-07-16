@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+
 use App\Http\Resources\UserResource;
 
 class UserController extends Controller
@@ -15,7 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return UserResource::collection(User::with('posts')->get());
+        return UserResource::collection(User::with('posts')->paginate(10));
     }
 
     /**
@@ -23,10 +24,10 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+    // public function create()
+    // {
+    //     //
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -36,7 +37,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = User::create([
+            'user_name' => $request->userName,
+            'first_name' => $request->firstName,
+            'last_name' => $request->lastName,
+            'birth_date' => $request->birthDate,
+            'email' => $request->email,
+            'role' => $request->role,
+            'ad_sense_snippet' => $request->adSenseSnippet,
+        ]);
+
+        return new UserResource($user);
     }
 
     /**
@@ -47,7 +58,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return new UserResource($user);
     }
 
     /**
@@ -56,10 +67,10 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
-    {
-        //
-    }
+    // public function edit(User $user)
+    // {
+    //     //
+    // }
 
     /**
      * Update the specified resource in storage.

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Post;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\PostResource;
+
 class PostController extends Controller
 {
     /**
@@ -14,7 +16,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        return PostResource::collection(Post::with('user')->paginate(10));
     }
 
     /**
@@ -22,10 +24,10 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+    // public function create()
+    // {
+    //     //
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -46,7 +48,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return new PostResource($post);
     }
 
     /**
@@ -55,10 +57,10 @@ class PostController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $post)
-    {
-        //
-    }
+    // public function edit(Post $post)
+    // {
+    //     //
+    // }
 
     /**
      * Update the specified resource in storage.
