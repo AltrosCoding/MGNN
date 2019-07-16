@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UserPost extends Migration
+class CreateUserPostTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,9 @@ class UserPost extends Migration
     public function up()
     {
         Schema::create('user_post', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('post_id');
+            $table->increments('id');
+            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('post_id');
 
             $table->foreign('user_id')
                   ->references('id')->on('users')
