@@ -12,8 +12,8 @@ class UserController extends Controller
     /**
      * Convert payload to json
      * 
-     * @param Mixed data that can be converted to a json object
-     * @return Response a json response
+     * @param Mixed $payload data that can be converted to a json object
+     * @return \Illuminate\Http\Response a json response
      */
     private function jsonResponse($payload)
     {
