@@ -26,7 +26,7 @@ class PostResource extends JsonResource
             'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at,
             'scheduledAt' => $this->scheduled_at,
-            'author' => $this->user,
+            'authors' => $this->users,
         ];
     }
 }

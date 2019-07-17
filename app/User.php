@@ -2,14 +2,15 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Model
+class User extends Authenticatable implements JWTSubject
 {
     protected $fillable = [
         'user_name',
+        'password',
         'first_name',
         'last_name',
         'birth_date',
@@ -18,15 +19,10 @@ class User extends Model
         'ad_sense_snippet',
     ];
 
+    public $timestamps = false;
+
     public function posts() {
-        return $this->hasManyThrough(
-            'App\Post', 
-            'App\UserPost', 
-            'user_id',
-            'id',
-            'id',
-            'post_id'
-        );
+        return $this->belongsToMany('App\Post');
     }
 
     public function getJWTIdentifier() {

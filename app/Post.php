@@ -17,14 +17,7 @@ class Post extends Model
         'scheduled_at',
     ];
 
-    public function user() {
-        return $this->hasOneThrough(
-            'App\User', 
-            'App\UserPost',
-            'post_id',
-            'id',
-            'id',
-            'user_id'
-        );
+    public function users() {
+        return $this->belongsToMany('App\User');
     }
 }
