@@ -10,13 +10,26 @@ use App\Http\Resources\PostResource;
 class PostController extends Controller
 {
     /**
+     * Convert payload to json
+     * 
+     * @param Mixed data that can be converted to a json object
+     * @return Response a json response
+     */
+    private function jsonResponse($payload)
+    {
+        return response()->json($payload);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return PostResource::collection(Post::with('users')->paginate(10));
+        return $this->jsonResponse(
+            PostResource::collection(Post::with('users')->paginate(10))
+        );
     }
 
     /**
@@ -48,7 +61,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return new PostResource($post);
+        return $this->jsonResponse(new PostResource($post));
     }
 
     /**

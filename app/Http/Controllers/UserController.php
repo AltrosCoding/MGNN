@@ -10,13 +10,26 @@ use App\Http\Resources\UserResource;
 class UserController extends Controller
 {
     /**
+     * Convert payload to json
+     * 
+     * @param Mixed data that can be converted to a json object
+     * @return Response a json response
+     */
+    private function jsonResponse($payload)
+    {
+        return response()->json($payload);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return UserResource::collection(User::with('posts')->paginate(10));
+        return $this->jsonResponse(
+            UserResource::collection(User::with('posts')->paginate(10))
+        );
     }
 
     /**
@@ -48,7 +61,7 @@ class UserController extends Controller
             'ad_sense_snippet' => $request->ad_sense_snippet,
         ]);
 
-        return new UserResource($user);
+        return $this->jsonResponse(new UserResource($user));
     }
 
     /**
@@ -59,7 +72,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return new UserResource($user);
+        return $this->jsonResponse(new UserResource($user));
     }
 
     /**
