@@ -40,7 +40,7 @@ class AuthController extends Controller
       return response()->json([
         'accessToken' => $token,
         'tokenType' => 'bearer',
-        'expiresIn' => $this->ttlDatetime(auth()->factory()->getTTL()),
+        'expiresOn' => $this->ttlDatetime(auth()->factory()->getTTL()),
       ]);
     }
 
