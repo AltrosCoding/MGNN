@@ -21,15 +21,31 @@ class User extends Authenticatable implements JWTSubject
 
     public $timestamps = false;
 
-    public function posts() {
+    /**
+     * Hashes any password that is to be registered to a user
+     * 
+     * @param Mixed $password the password to be hashed
+     * @return none
+     */
+    public function setPasswordAttribute($password)
+    {
+        if (!empty($password)) {
+            $this->attributes['password'] = bcrypt($password);
+        }
+    }
+
+    public function posts() 
+    {
         return $this->belongsToMany('App\Post');
     }
 
-    public function getJWTIdentifier() {
+    public function getJWTIdentifier() 
+    {
         return $this->getKey();
     }
 
-    public function getJWTCustomClaims() {
+    public function getJWTCustomClaims() 
+    {
         return [];
     }
 }

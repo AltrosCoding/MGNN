@@ -17,7 +17,7 @@ class CreatePostsTable extends Migration
             $table->increments('id');
             $table->string('title', 100);
             $table->text('excerpt');
-            $table->text('content');
+            $table->json('content');
             $table->string('featured_image', 1000);
             $table->string('category', 100);
             $table->string('tag', 1000);

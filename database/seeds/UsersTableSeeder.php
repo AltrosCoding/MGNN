@@ -11,14 +11,6 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\User::class, 10)
-        ->create()
-        ->each(function ($user) {
-            factory(\App\Post::class, rand(0, 3))
-            ->create()
-            ->each(function ($post) use ($user) {
-                $user->posts()->attach($post->id);
-            });
-        });
+        factory(\App\User::class, 10)->create();
     }
 }
