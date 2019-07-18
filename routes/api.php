@@ -19,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::middleware(['changeCase'])->group(function () {
     Route::post('register', 'AuthController@register');
-    Route::post('login', 'AuthController@login');
+    Route::post('login', 'AuthController@login')->name('login');
 
     Route::apiResources([
         'users' => 'UserController',
