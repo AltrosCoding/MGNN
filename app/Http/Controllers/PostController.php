@@ -50,7 +50,20 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $post = Post::create([
+            'title' => $request->title,
+            'excerpt' => $request->excerpt,
+            'content' => $request->content,
+            'featured_image' => $request->featured_image,
+            'category' => $request->category,
+            'tag' => $request->tag,
+            'status' => $request->status,
+            'scheduled_at' => $request->scheduled_at,
+        ]);
+
+        $post->users()->attach($request->user()->id);
+
+        return $this->jsonResponse(new PostResource($post));
     }
 
     /**
