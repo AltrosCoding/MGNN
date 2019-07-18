@@ -40,7 +40,15 @@ class AuthController extends Controller
       return response()->json([
         'accessToken' => $token,
         'tokenType' => 'bearer',
-        'expiresIn' => auth()->factory()->getTTL() * 60
+        'expiresIn' => $this->ttlDatetime(auth()->factory()->getTTL() * 60),
       ]);
+    }
+
+    private function ttlDatetime($ttl) {
+        $time = new DateTime();
+
+        $time->modify("+{$ttl} minutes");
+
+        return $time->format('Y-m-d H:i');
     }
 }
