@@ -10,6 +10,18 @@ use App\Http\Resources\UserResource;
 class UserController extends Controller
 {
     /**
+     * Requires endpoints, aside from those excepted, to user authentication
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api')
+        ->except([
+            'index', 
+            'show', 
+        ]);
+    }
+
+    /**
      * Convert payload to json
      * 
      * @param Mixed $payload data that can be converted to a json object
