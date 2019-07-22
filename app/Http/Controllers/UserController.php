@@ -107,7 +107,21 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $user->update($request->only([
+            'user_name',
+            'password',
+            'first_name',
+            'last_name',
+            'birth_date',
+            'email',
+            'is_confirmed',
+            'role',
+            'exp',
+            'level',
+            'ad_sense_snippet',
+        ]));
+
+        return $this->jsonResponse(new UserResource($user));
     }
 
     /**

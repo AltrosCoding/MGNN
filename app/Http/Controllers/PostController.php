@@ -109,7 +109,18 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $post->update($request->only([
+            'title',
+            'excerpt',
+            'content',
+            'featured_image',
+            'category',
+            'tag',
+            'status',
+            'scheduled_at',
+        ]));
+
+        return $this->jsonResponse(new PostResource($post));
     }
 
     /**
