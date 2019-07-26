@@ -17,6 +17,10 @@ class Post extends Model
         'scheduled_at',
     ];
 
+    protected $casts = [
+        'content' => 'array',
+    ];
+
     public function users() {
         return $this
                 ->belongsToMany('App\User')
