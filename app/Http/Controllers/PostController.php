@@ -122,15 +122,11 @@ class PostController extends Controller
 
 
         if ($request->has(['add_authors'])) {
-            foreach ($request->add_authors as $user) {
-                $post->users()->attach($user);
-            }
+            $post->users()->attach($request->add_authors);
         }
 
         if ($request->has(['remove_authors'])) {
-            foreach ($request->remove_authors as $user) {
-                $post->users()->detach($user);
-            }
+            $post->users()->attach($request->remove_authors);
         }
 
         return $this->jsonResponse(new PostResource($post));
