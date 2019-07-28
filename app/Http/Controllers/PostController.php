@@ -120,6 +120,19 @@ class PostController extends Controller
             'scheduled_at',
         ]));
 
+
+        if ($request->has(['add_authors'])) {
+            foreach ($request->add_authors as $user) {
+                $post->users()->attach($user);
+            }
+        }
+
+        if ($request->has(['remove_authors'])) {
+            foreach ($request->remove_authors as $user) {
+                $post->users()->detach($user);
+            }
+        }
+
         return $this->jsonResponse(new PostResource($post));
     }
 
