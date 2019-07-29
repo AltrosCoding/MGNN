@@ -27,6 +27,7 @@ class UserResource extends JsonResource
             'level' => $this->level,
             'adSenseSnippet' => $this->ad_sense_snippet,
             'posts' => $this->posts,
+            'roles' => $this->roles,
         ];
     }
 }
