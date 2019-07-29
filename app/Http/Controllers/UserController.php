@@ -121,6 +121,14 @@ class UserController extends Controller
             'ad_sense_snippet',
         ]));
 
+        if ($request->has(['add_roles'])) {
+            $user->roles()->syncWithoutDetaching($request->add_roles);
+        }
+
+        if ($request->has(['remove_roles'])) {
+            $user->roles()->detach($request->remove_roles);
+        }
+
         return $this->jsonResponse(new UserResource($user));
     }
 
