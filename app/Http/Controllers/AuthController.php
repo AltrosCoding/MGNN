@@ -8,6 +8,15 @@ use App\User;
 
 class AuthController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api')
+        ->except([
+            'register', 
+            'login', 
+        ]);
+    }
+
     public function register(Request $request)
     {
         $user = User::create([
@@ -33,6 +42,15 @@ class AuthController extends Controller
         }
 
         return $this->respondWithToken($token);
+    }
+
+    public function logout(Request $request)
+    {
+        auth()->logout();
+
+        return response()->json([
+            'status' => 'success',
+        ], 200);
     }
 
     protected function respondWithToken($token)
