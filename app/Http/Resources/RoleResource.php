@@ -30,6 +30,10 @@ class RoleResource extends JsonResource
             'deleteUser' => $request->delete_user,
             'inviteAuthor' => $request->invite_author,
             'revokeAuthor' => $request->revoke_author,
+            'scheduleArticle' => $request->schedule_article,
+            'runArticle' => $request->run_article,
+            'viewPending' => $request->view_pending,
+            'permalink' => $request->permalink,
         ];
     }
 }

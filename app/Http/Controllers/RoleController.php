@@ -64,6 +64,10 @@ class RoleController extends Controller
             'delete_user' => $request->delete_user,
             'invite_author' => $request->invite_author,
             'revoke_author' => $request->revoke_author,
+            'schedule_article' => $request->schedule_article,
+            'run_article' => $request->run_article,
+            'view_pending' => $request->view_pending,
+            'permalink' => $request->permalink,
         ]);
 
         return $this->jsonResponse(new RoleResource($role));
@@ -105,6 +109,10 @@ class RoleController extends Controller
             'delete_user',
             'invite_author',
             'revoke_author',
+            'schedule_article',
+            'run_article',
+            'view_pending',
+            'permalink',
         ]));
 
         if ($request->has(['add_users'])) {

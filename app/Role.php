@@ -22,6 +22,10 @@ class Role extends Model
         'delete_user',
         'invite_author',
         'revoke_author',
+        'schedule_article',
+        'run_article',
+        'view_pending',
+        'permalink',
     ];
 
     public function users()

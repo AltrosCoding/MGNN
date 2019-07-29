@@ -30,6 +30,10 @@ class CreateRolesTable extends Migration
             $table->boolean('delete_user');
             $table->boolean('invite_author');
             $table->boolean('revoke_author');
+            $table->boolean('schedule_article');
+            $table->boolean('run_article');
+            $table->boolean('view_pending');
+            $table->boolean('permalink');
             $table->timestamps();
         });
     }
