@@ -45,16 +45,6 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    // public function create()
-    // {
-    //     //
-    // }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -85,17 +75,6 @@ class UserController extends Controller
     {
         return $this->jsonResponse(new UserResource($user));
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    // public function edit(User $user)
-    // {
-    //     //
-    // }
 
     /**
      * Update the specified resource in storage.
