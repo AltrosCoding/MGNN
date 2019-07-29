@@ -25,5 +25,6 @@ Route::middleware(['changeCase'])->group(function () {
     Route::apiResources([
         'users' => 'UserController',
         'posts' => 'PostController',
+        'roles' => 'RoleController',
     ]);
 });
