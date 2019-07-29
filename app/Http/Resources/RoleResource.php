@@ -34,6 +34,7 @@ class RoleResource extends JsonResource
             'runArticle' => $request->run_article,
             'viewPending' => $request->view_pending,
             'permalink' => $request->permalink,
+            'users' => $request->users,
         ];
     }
 }
