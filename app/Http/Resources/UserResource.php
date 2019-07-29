@@ -22,7 +22,6 @@ class UserResource extends JsonResource
             'birthDate' => (string) $this->birth_date,
             'email' => $this->email,
             'isConfirmed' => $this->is_confirmed,
-            'role' => $this->role,
             'exp' => $this->exp,
             'level' => $this->level,
             'adSenseSnippet' => $this->ad_sense_snippet,

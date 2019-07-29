@@ -21,7 +21,6 @@ class CreateUsersTable extends Migration
             $table->datetime('birth_date')->nullable();
             $table->string('email', 100)->unique();
             $table->boolean('is_confirmed')->default(false);
-            $table->string('role', 100);
             $table->integer('exp')->default(0);
             $table->integer('level')->default(1);
             $table->string('ad_sense_snippet', 1000)->nullable();

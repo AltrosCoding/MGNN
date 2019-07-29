@@ -69,7 +69,6 @@ class UserController extends Controller
             'last_name' => $request->last_name,
             'birth_date' => $request->birth_date,
             'email' => $request->email,
-            'role' => $request->role,
             'ad_sense_snippet' => $request->ad_sense_snippet,
         ]);
 
@@ -115,7 +114,6 @@ class UserController extends Controller
             'birth_date',
             'email',
             'is_confirmed',
-            'role',
             'exp',
             'level',
             'ad_sense_snippet',
