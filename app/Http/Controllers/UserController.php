@@ -10,7 +10,7 @@ use App\Http\Resources\UserResource;
 class UserController extends Controller
 {
     /**
-     * Requires endpoints, aside from those excepted, to user authentication
+     * Requires endpoints, aside from those excepted, to use authentication
      */
     public function __construct()
     {

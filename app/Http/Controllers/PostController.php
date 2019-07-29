@@ -122,11 +122,11 @@ class PostController extends Controller
 
 
         if ($request->has(['add_authors'])) {
-            $post->users()->attach($request->add_authors);
+            $post->users()->syncWithoutDetaching($request->add_authors);
         }
 
         if ($request->has(['remove_authors'])) {
-            $post->users()->attach($request->remove_authors);
+            $post->users()->detach($request->remove_authors);
         }
 
         return $this->jsonResponse(new PostResource($post));
