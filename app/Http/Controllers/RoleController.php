@@ -18,7 +18,7 @@ class RoleController extends Controller
         ->except([
             'index', 
             'show', 
-        ]);;
+        ]);
     }
 
     /**
