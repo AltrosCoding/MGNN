@@ -24,6 +24,5 @@ $factory->define(User::class, function (Faker $faker) {
         'birth_date' => $faker->date,
         'email' => $faker->unique()->safeEmail,
         'is_confirmed' => $faker->numberBetween(0, 1),
-        'role' => $faker->randomElement(Config::get('constants.roles')),
     ];
 });
