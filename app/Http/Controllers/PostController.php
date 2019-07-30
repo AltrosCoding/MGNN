@@ -113,7 +113,7 @@ class PostController extends Controller
         }
 
         if ($request->has(['add_authors'])) {
-            if ($client->cannot('edit_article')) {
+            if ($client->cannot('invite_author')) {
                 return response()->json([
                     'error' => 'Forbidden',
                 ], 403);
@@ -123,7 +123,7 @@ class PostController extends Controller
         }
 
         if ($request->has(['remove_authors'])) {
-            if ($client->cannot('edit_article')) {
+            if ($client->cannot('remove_author')) {
                 return response()->json([
                     'error' => 'Forbidden',
                 ], 403);
