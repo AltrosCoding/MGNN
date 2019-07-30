@@ -52,6 +52,14 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        $client = $request->user();
+
+        if ($client->cannot('create_role')) {
+            return response()->json([
+                'error' => 'Forbidden',
+            ], 403);
+        }
+
         $role = Role::create([
             'name' => $request->name,
             'create_comment' => $request->create_comment,
@@ -97,6 +105,34 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
+        $client = $request->user();
+
+        if ($client->cannot('edit_role')) {
+            return response()->json([
+                'error' => 'Forbidden',
+            ], 403);
+        }
+
+        if ($request->has(['add_users'])) {
+            if ($client->cannot('edit_user')) {
+                return response()->json([
+                    'error' => 'Forbidden',
+                ], 403);
+            }
+
+            $role->users()->syncWithoutDetaching($request->add_users);
+        }
+
+        if ($request->has(['remove_users'])) {
+            if ($client->cannot('edit_user')) {
+                return response()->json([
+                    'error' => 'Forbidden',
+                ], 403);
+            }
+            
+            $role->users()->detach($request->remove_users);
+        }
+
         $role->update($request->only([
             'name',
             'create_comment',
@@ -119,14 +155,6 @@ class RoleController extends Controller
             'permalink',
         ]));
 
-        if ($request->has(['add_users'])) {
-            $role->users()->syncWithoutDetaching($request->add_users);
-        }
-
-        if ($request->has(['remove_users'])) {
-            $role->users()->detach($request->remove_users);
-        }
-
         return $this->jsonResponse(new RoleResource($role));
     }
 
@@ -138,6 +166,14 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+        $client = $request->user();
+
+        if ($client->cannot('delete_role')) {
+            return response()->json([
+                'error' => 'Forbidden',
+            ], 403);
+        }
+
         $role->delete();
 
         return response()->json(null, 204);
