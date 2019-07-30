@@ -33,6 +33,16 @@ class User extends Authenticatable implements JWTSubject
         }
     }
 
+    public function can($ability, $arguments = []): bool
+    {
+        return $this->roles()->where($ability, true)->count() > 0;
+    }
+
+    public function cannot($ability, $arguments = []): bool
+    {
+        return $this->roles()->where($ability, true)->count() === 0;
+    }
+
     public function posts() 
     {
         return $this->belongsToMany('App\Post');

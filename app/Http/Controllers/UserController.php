@@ -52,6 +52,12 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->user()->cannot('create_user')) {
+            return response()->json([
+                'error' => 'Forbidden',
+            ], 403);
+        }
+
         $user = User::create([
             'user_name' => $request->user_name,
             'password' => $request->password,
@@ -85,6 +91,13 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        if ($request->user()->cannot('edit_user')
+        && $request->user()->id != $user->id) {
+            return response()->json([
+                'error' => 'Forbidden',
+            ], 403);
+        }
+
         $user->update($request->only([
             'user_name',
             'password',
@@ -117,6 +130,12 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        if ($request->user()->cannot('delete_user')) {
+            return response()->json([
+                'error' => 'Forbidden',
+            ], 403);
+        }
+
         $user->delete();
 
         return response()->json(null, 204);
