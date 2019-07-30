@@ -52,6 +52,21 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        $client = $request->user();
+
+        if ($client->cannot('create_article')) {
+            return response()->json([
+                'error' => 'Forbidden',
+            ], 403);
+        }
+
+        if ($request->has(['scheduled_at'])
+        && $client->cannot('schedule_article')) {
+            return response()->json([
+                'error' => 'Forbidden',
+            ], 403);
+        }
+
         $post = Post::create([
             'title' => $request->title,
             'excerpt' => $request->excerpt,
@@ -63,7 +78,7 @@ class PostController extends Controller
             'scheduled_at' => $request->scheduled_at,
         ]);
 
-        $post->users()->attach($request->user()->id);
+        $post->users()->attach($client->id);
 
         return $this->jsonResponse(new PostResource($post));
     }
@@ -88,6 +103,42 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        $client = $request->user();
+
+        if ($client->cannot('edit_article')
+        && !$post->users()->contains($client)) {
+            return response()->json([
+                'error' => 'Forbidden',
+            ], 403);
+        }
+
+        if ($request->has(['add_authors'])) {
+            if ($client->cannot('edit_article')) {
+                return response()->json([
+                    'error' => 'Forbidden',
+                ], 403);
+            }
+
+            $post->users()->syncWithoutDetaching($request->add_authors);
+        }
+
+        if ($request->has(['remove_authors'])) {
+            if ($client->cannot('edit_article')) {
+                return response()->json([
+                    'error' => 'Forbidden',
+                ], 403);
+            }
+
+            $post->users()->detach($request->remove_authors);
+        }
+
+        if ($request->has(['scheduled_at'])
+        && $client->cannot('schedule_article')) {
+            return response()->json([
+                'error' => 'Forbidden',
+            ], 403);
+        }
+
         $post->update($request->only([
             'title',
             'excerpt',
@@ -98,15 +149,6 @@ class PostController extends Controller
             'status',
             'scheduled_at',
         ]));
-
-
-        if ($request->has(['add_authors'])) {
-            $post->users()->syncWithoutDetaching($request->add_authors);
-        }
-
-        if ($request->has(['remove_authors'])) {
-            $post->users()->detach($request->remove_authors);
-        }
 
         return $this->jsonResponse(new PostResource($post));
     }
@@ -119,6 +161,14 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        $client = $request->user();
+
+        if ($client->cannot('delete_article')) {
+            return response()->json([
+                'error' => 'Forbidden',
+            ], 403);
+        }
+
         $post->delete();
 
         return response()->json(null, 204);
