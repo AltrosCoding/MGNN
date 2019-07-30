@@ -52,7 +52,9 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->user()->cannot('create_user')) {
+        $client = $request->user();
+
+        if ($client->cannot('create_user')) {
             return response()->json([
                 'error' => 'Forbidden',
             ], 403);
@@ -67,6 +69,8 @@ class UserController extends Controller
             'email' => $request->email,
             'ad_sense_snippet' => $request->ad_sense_snippet,
         ]);
+
+        $user->roles()->attach(\App\Role::where('name', 'User')->first()->id);
 
         return $this->jsonResponse(new UserResource($user));
     }
@@ -91,15 +95,17 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        if ($request->user()->cannot('edit_user')
-        && $request->user()->id != $user->id) {
+        $client = $request->user();
+
+        if ($client->cannot('edit_user')
+        && $client->id != $user->id) {
             return response()->json([
                 'error' => 'Forbidden',
             ], 403);
         }
 
         if ($request->has(['add_roles'])) {
-            if ($request->user()->cannot('edit_user')) {
+            if ($client->cannot('edit_user')) {
                 return response()->json([
                     'error' => 'Forbidden',
                 ], 403);
@@ -109,7 +115,7 @@ class UserController extends Controller
         }
 
         if ($request->has(['remove_roles'])) {
-            if ($request->user()->cannot('edit_user')) {
+            if ($client->cannot('edit_user')) {
                 return response()->json([
                     'error' => 'Forbidden',
                 ], 403);
@@ -142,7 +148,9 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        if ($request->user()->cannot('delete_user')) {
+        $client = $request->user();
+
+        if ($client->cannot('delete_user')) {
             return response()->json([
                 'error' => 'Forbidden',
             ], 403);
