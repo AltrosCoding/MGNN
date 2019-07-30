@@ -29,7 +29,6 @@ class Post extends Model
                     'user_name',
                     'first_name',
                     'last_name',
-                    'role',
                     'exp',
                     'level',
                     'ad_sense_snippet',
