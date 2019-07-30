@@ -104,23 +104,26 @@ class UserController extends Controller
             ], 403);
         }
 
+        $restricted = [
+            'add_roles',
+            'remove_roles',
+            'is_confirmed',
+            'exp',
+            'level',
+        ];
+
+        if ($request->has($restricted)
+        && $client->cannot('edit_user')) {
+            return response()->json([
+                'error' => 'Forbidden',
+            ], 403);
+        }
+
         if ($request->has(['add_roles'])) {
-            if ($client->cannot('edit_user')) {
-                return response()->json([
-                    'error' => 'Forbidden',
-                ], 403);
-            }
-    
             $user->roles()->syncWithoutDetaching($request->add_roles);
         }
 
         if ($request->has(['remove_roles'])) {
-            if ($client->cannot('edit_user')) {
-                return response()->json([
-                    'error' => 'Forbidden',
-                ], 403);
-            }
-    
             $user->roles()->detach($request->remove_roles);
         }
 
