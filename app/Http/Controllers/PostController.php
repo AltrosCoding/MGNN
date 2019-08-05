@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Post;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\PostResource;
 
 class PostController extends Controller
@@ -39,8 +40,32 @@ class PostController extends Controller
      */
     public function index()
     {
+        $posts = Post::with('users');
+
+        if (Auth::check()) {
+            $client = Auth::user();
+            
+            if ($client->cannot('edit_article')) {
+                $posts = $posts->where('status', '=', 'published');
+
+                if ($client->can('view_pending')) {
+                    $posts = $posts->orWhere('status', '=', 'scheduled')
+                    ->orWhere('status', '=', 'pending');
+                }
+
+                if ($client->can('create_article')) {
+                    $posts = $posts->orWhereHas('users', function ($query) use ($client) {
+                        $query->where('id', '=', $client->id);
+                    });
+                }
+            }
+        }
+        else {
+            $posts = $posts->where('status', '=', 'published');
+        }
+
         return $this->jsonResponse(
-            PostResource::collection(Post::with('users')->paginate(10))
+            PostResource::collection($posts->paginate(10))
         );
     }
 
