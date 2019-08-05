@@ -116,6 +116,34 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        if ($post->status === 'published') {
+            return $this->jsonResponse(new PostResource($post));
+        }
+        
+        if (!Auth::check()) {
+            return response()->json([
+                'error' => 'Unauthorized',
+            ], 401);
+        }
+
+        $client = Auth::user();
+
+        if ($client->cannot('edit_article')) {
+            if ($client->can('view_pending') 
+                && ($post->status === 'scheduled' 
+                || $post->status === 'pending')) {
+                return $this->jsonResponse(new PostResource($post));
+            }
+
+            if ($client->can('create_article') && $post->users()->contains($client)) {
+                return $this->jsonResponse(new PostResource($post));
+            }
+
+            return response()->json([
+                'error' => 'Forbidden',
+            ], 403);
+        }
+
         return $this->jsonResponse(new PostResource($post));
     }
 
