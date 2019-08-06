@@ -58,11 +58,16 @@ class PostController extends Controller
                         $query->where('id', '=', $client->id);
                     });
                 }
+
+                $posts = $posts->orderBy('created_at', 'desc');
             }
         }
         else {
-            $posts = $posts->where('status', '=', 'published');
+            $posts = $posts->where('status', '=', 'published')
+            ->orderBy('scheduled_at', 'desc');
         }
+
+        $posts = $posts->orderBy('scheduled_at');
 
         return $this->jsonResponse(
             PostResource::collection($posts->paginate(10))
