@@ -40,7 +40,7 @@ class UserController extends Controller
     public function index()
     {
         return $this->jsonResponse(
-            UserResource::collection(User::with('posts')->with('roles')->paginate(10))
+            UserResource::collection(User::paginate(10))
         );
     }
 
