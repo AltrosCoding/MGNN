@@ -28,6 +28,10 @@ class Role extends Model
         'permalink',
     ];
 
+    protected $hidden = [
+        'pivot',
+    ];
+
     public function users()
     {
         return $this

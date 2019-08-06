@@ -17,6 +17,10 @@ class Post extends Model
         'scheduled_at',
     ];
 
+    protected $hidden = [
+        'pivot',
+    ];
+
     protected $casts = [
         'content' => 'array',
     ];

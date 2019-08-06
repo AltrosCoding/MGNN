@@ -18,6 +18,10 @@ class User extends Authenticatable implements JWTSubject
         'ad_sense_snippet',
     ];
 
+    protected $hidden = [
+        'pivot',
+    ];
+
     public $timestamps = false;
 
     /**
