@@ -27,7 +27,9 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
 
-        $schedule->command('command:publish-scheduled')->everyFiveMinutes();
+        $schedule->command('command:publish-scheduled')
+            ->everyFiveMinutes()
+            ->runInBackground();
     }
 
     /**
