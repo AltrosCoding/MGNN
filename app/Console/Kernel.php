@@ -5,8 +5,6 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
-use App\Post;
-
 class Kernel extends ConsoleKernel
 {
     /**
@@ -15,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        'App\Console\Commands\PublishScheduled',
     ];
 
     /**
@@ -29,12 +27,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
 
-        $schedule->call(function () {
-            Post::whereNotNull('scheduled_at')
-            ->where('scheduled_at', '<=', \Carbon\Carbon::now())
-            ->where('status', '=', 'scheduled')
-            ->update(['status' => 'published']);
-        })->everyFiveMinutes();
+        $schedule->command('command:publish-scheduled')->everyFiveMinutes();
     }
 
     /**
