@@ -119,6 +119,9 @@ class PostController extends Controller
                 'error' => 'Forbidden',
             ], 403);
         }
+        else if ($this->isPublishing($request)) {
+            $request->request->add(['scheduled_at' => \Carbon\Carbon::now()]);
+        }
 
         $post = Post::create([
             'title' => $request->title,
@@ -189,7 +192,7 @@ class PostController extends Controller
                 'error' => 'Bad Request',
             ], 400);
         }
-        
+
         $client = $request->user();
 
         if ($client->cannot('edit_article')
@@ -231,6 +234,9 @@ class PostController extends Controller
             return response()->json([
                 'error' => 'Forbidden',
             ], 403);
+        }
+        else if ($this->isPublishing($request)) {
+            $request->request->add(['scheduled_at' => \Carbon\Carbon::now()]);
         }
 
         $post->update($request->only([
