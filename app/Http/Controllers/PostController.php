@@ -21,6 +21,16 @@ class PostController extends Controller
             'show',
         ]);
     }
+
+    private function isScheduling(Request $request): bool
+    {
+        return $request->has(['scheduled_at']);
+    }
+
+    private function isPublishing(Request $request): bool
+    {
+        return $request->has(['status']) && $request->status === 'published';
+    }
     
     /**
      * Convert payload to json
@@ -82,6 +92,12 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        if ($this->isScheduling($request) && $this->isPublishing($request)) {
+            return response()->json([
+                'error' => 'Bad Request',
+            ], 400);
+        }
+        
         $client = $request->user();
 
         if ($client->cannot('create_article')) {
@@ -90,8 +106,15 @@ class PostController extends Controller
             ], 403);
         }
 
-        if ($request->has(['scheduled_at'])
+        if ($this->isScheduling($request)
         && $client->cannot('schedule_article')) {
+            return response()->json([
+                'error' => 'Forbidden',
+            ], 403);
+        }
+
+        if ($this->isPublishing($request)
+        && $client->cannot('publish_article')) {
             return response()->json([
                 'error' => 'Forbidden',
             ], 403);
@@ -161,6 +184,12 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        if ($this->isScheduling($request) && $this->isPublishing($request)) {
+            return response()->json([
+                'error' => 'Bad Request',
+            ], 400);
+        }
+        
         $client = $request->user();
 
         if ($client->cannot('edit_article')
@@ -190,8 +219,15 @@ class PostController extends Controller
             $post->users()->detach($request->remove_authors);
         }
 
-        if ($request->has(['scheduled_at'])
+        if ($this->isScheduling($request)
         && $client->cannot('schedule_article')) {
+            return response()->json([
+                'error' => 'Forbidden',
+            ], 403);
+        }
+
+        if ($this->isPublishing($request)
+        && $client->cannot('publish_article')) {
             return response()->json([
                 'error' => 'Forbidden',
             ], 403);
