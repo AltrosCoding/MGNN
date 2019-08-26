@@ -71,13 +71,14 @@ class PostController extends Controller
 
                 $posts = $posts->orderBy('created_at', 'desc');
             }
+
+            $posts = $posts->orderBy('published_at', 'desc')
+            ->orderBy('updated_at', 'desc');
         }
         else {
             $posts = $posts->where('status', '=', 'published')
-            ->orderBy('scheduled_at', 'desc');
+            ->orderBy('published_at', 'desc');
         }
-
-        $posts = $posts->orderBy('scheduled_at');
 
         return $this->jsonResponse(
             PostResource::collection($posts->paginate(10))
@@ -120,7 +121,7 @@ class PostController extends Controller
             ], 403);
         }
         else if ($this->isPublishing($request)) {
-            $request->request->add(['scheduled_at' => \Carbon\Carbon::now()]);
+            $request->request->add(['published_at' => \Carbon\Carbon::now()]);
         }
 
         $post = Post::create([
@@ -131,8 +132,14 @@ class PostController extends Controller
             'category' => $request->category,
             'tag' => $request->tag,
             'status' => $request->status,
-            'scheduled_at' => $request->scheduled_at,
+            'published_at' => $request->published_at,
         ]);
+
+        if (!$this->isPublishing($request) && $this->isScheduling($request)) {
+            $post->schedule()->create([
+                'scheduled_at' => $request->scheduled_at,
+            ]);
+        }
 
         $post->users()->attach($client->id);
 
@@ -236,7 +243,7 @@ class PostController extends Controller
             ], 403);
         }
         else if ($this->isPublishing($request)) {
-            $request->request->add(['scheduled_at' => \Carbon\Carbon::now()]);
+            $request->request->add(['published_at' => \Carbon\Carbon::now()]);
         }
 
         $post->update($request->only([
@@ -247,8 +254,14 @@ class PostController extends Controller
             'category',
             'tag',
             'status',
-            'scheduled_at',
+            'published_at',
         ]));
+
+        if (!$this->isPublishing($request) && $this->isScheduling($request)) {
+            $post->schedule()->create([
+                'scheduled_at' => $request->scheduled_at,
+            ]);
+        }
 
         return $this->jsonResponse(new PostResource($post));
     }
