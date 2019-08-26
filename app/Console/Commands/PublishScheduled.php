@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-use App\Post;
+use App\PostSchedule;
 
 class PublishScheduled extends Command
 {
@@ -39,9 +39,15 @@ class PublishScheduled extends Command
      */
     public function handle()
     {
-        Post::whereNotNull('scheduled_at')
-            ->where('scheduled_at', '<=', \Carbon\Carbon::now())
-            ->where('status', '=', 'scheduled')
-            ->update(['status' => 'published']);
+        PostSchedule::where('scheduled_at', '<=', \Carbon\Carbon::now())
+        ->get()
+        ->each(function ($schedule) {
+            $schedule->post()->update([
+                'status' => 'published',
+                'published_at' => \Carbon\Carbon::now(),
+            ]);
+
+            $schedule->delete();
+        });
     }
 }

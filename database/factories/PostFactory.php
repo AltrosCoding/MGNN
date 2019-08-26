@@ -6,6 +6,16 @@ use App\Post;
 use Faker\Generator as Faker;
 
 $factory->define(Post::class, function (Faker $faker) {
+    $status = $faker->randomElement(Config::get('constants.statuses'));
+    $scheduled_at = null;
+
+    if ($status === 'scheduled') {
+        $scheduled_at = $faker->dateTimeBetween('+15 minutes', '+5 days');
+    }
+    else if ($status === 'published') {
+        $scheduled_at = $faker->dateTimeBetween('-5 days', 'now');
+    }
+    
     return [
         'title' => $faker->text(100),
         'excerpt' => $faker->paragraph,
@@ -13,6 +23,7 @@ $factory->define(Post::class, function (Faker $faker) {
         'featured_image' => $faker->imageUrl(640, 480, 'cats'),
         'category' => $faker->text(100),
         'tag' => $faker->text(1000),
-        'status' => $faker->randomElement(Config::get('constants.statuses')),
+        'status' => $status,
+        'scheduled_at' => $scheduled_at
     ];
 });

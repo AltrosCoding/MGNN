@@ -14,7 +14,7 @@ class Post extends Model
         'category',
         'tag',
         'status',
-        'scheduled_at',
+        'published_at',
     ];
 
     protected $hidden = [
@@ -37,5 +37,12 @@ class Post extends Model
                     'level',
                     'ad_sense_snippet',
                 ]);
+    }
+
+    public function schedule()
+    {
+        return $this->hasOne('App\PostSchedule')->withDefault([
+            'scheduled_at' => null,
+        ]);
     }
 }
