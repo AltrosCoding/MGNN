@@ -149,7 +149,7 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Request $request, User $user)
     {
         $client = $request->user();
 
